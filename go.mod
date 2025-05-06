@@ -1,6 +1,6 @@
 module github.com/Method-Security/webassess
 
-go 1.22.5
+go 1.24
 
 require (
 	github.com/Method-Security/pkg v0.0.3

@@ -74,7 +74,7 @@ func (a *WebAssess) InitRootCommand() {
 				_, pathErr := exec.LookPath("ollama")
 				if pathErr != nil {
 					a.OutputSignal.AddError(errors.New("ollama is not installed or is not in the system path"))
-					return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+					return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 				}
 
 				// Check to see if ollama is running on the standard URL without being spawned by the CLI
@@ -83,13 +83,13 @@ func (a *WebAssess) InitRootCommand() {
 					err := ollama.StartOllama()
 					if err != nil {
 						a.OutputSignal.AddError(errors.New("failed to start ollama:" + err.Error()))
-						return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+						return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 					}
 
 					// Check to see if ollama is running after attempting to start it
 					if !ollama.IsOllamaRunning(ollama.OllamaStandardBaseURL) {
 						a.OutputSignal.AddError(errors.New("ollama could not be started by the CLI"))
-						return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+						return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 					}
 				}
 				ollamaURL = ollama.OllamaStandardBaseURL
@@ -97,7 +97,7 @@ func (a *WebAssess) InitRootCommand() {
 				// Check to see if ollama is running on the provided URL
 				if !ollama.IsOllamaRunning(ollamaURL) {
 					a.OutputSignal.AddError(errors.New("ollama is not running on the provided URL"))
-					return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+					return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 				}
 			}
 			a.RootFlags.OllamaURL = ollamaURL
@@ -105,19 +105,19 @@ func (a *WebAssess) InitRootCommand() {
 			// Set OLLAMA_HOST environment variable for ollama client to pick up
 			if err := os.Setenv("OLLAMA_HOST", ollamaURL); err != nil {
 				a.OutputSignal.AddError(errors.New("failed to set OLLAMA_HOST environment variable: " + err.Error()))
-				return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+				return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 			}
 
 			// Check to see if the target ollama model is available
 			allowDownload, err := cmd.Flags().GetBool("allow-download")
 			if err != nil {
 				a.OutputSignal.AddError(err)
-				return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+				return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 			}
 			ollamaModel, err := cmd.Flags().GetString("ollama-model")
 			if err != nil {
 				a.OutputSignal.AddError(err)
-				return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+				return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 			}
 
 			if !ollama.ModelReady(ollamaURL, ollamaModel) {
@@ -125,22 +125,22 @@ func (a *WebAssess) InitRootCommand() {
 					// Download the model only if in allowed list
 					if !ollama.IsAllowedModel(ollamaModel) {
 						a.OutputSignal.AddError(fmt.Errorf("ollama model '%s' is not in the allowed models list", ollamaModel))
-						return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+						return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 					}
 					err := ollama.DownloadOllamaModel(ollamaURL, ollamaModel)
 					if err != nil {
 						a.OutputSignal.AddError(errors.New("failed to download ollama model: " + err.Error()))
-						return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+						return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 					}
 					// Check if model is ready after downloading
 					if !ollama.ModelReady(ollamaURL, ollamaModel) {
 						a.OutputSignal.AddError(errors.New("ollama model is not ready after download"))
-						return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+						return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 					}
 				} else {
 					// Exit since model is not available
 					a.OutputSignal.AddError(fmt.Errorf("ollama model '%s' is not available and allow-download is not set", ollamaModel))
-					return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+					return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 				}
 			}
 
@@ -148,7 +148,7 @@ func (a *WebAssess) InitRootCommand() {
 			model, err := ollama.GetModel(ollamaURL, ollamaModel)
 			if err != nil {
 				a.OutputSignal.AddError(errors.New("failed to get ollama model: " + err.Error()))
-				return fmt.Errorf(*a.OutputSignal.ErrorMessage)
+				return fmt.Errorf("%s", *a.OutputSignal.ErrorMessage)
 			}
 			a.RootFlags.OllamaModel = model
 
