@@ -23,7 +23,9 @@ go.work.sum
 /out/
 
 # Goreleaser
-/dist
+/dist/**
+/output/**
+/artifacts/**
 
 # Env Files
 .env/
@@ -32,8 +34,8 @@ go.work.sum
 # mkdocs
 /site
 
-# Fern Python Testing
-generated/python/**
+# Fern
+/generated/**
 
 # Don't ignore vendors
 !vendor/**

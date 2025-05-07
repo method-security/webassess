@@ -1,39 +1,39 @@
 default-group: local
 groups:
-    local:
-        generators:
-            - name: fernapi/fern-go-sdk
-              version: 0.23.2
-              config:
-                  importpath: github.com/Method-Security/webassess/generated/go
-              output:
-                  location: local-file-system
-                  path: ../generated/go
-    pypi-local:
-        generators:
-            - name: fernapi/fern-pydantic-model
-              version: 1.4.4
-              output:
-                  location: local-file-system
-                  path: ../generated/python
-    pypi-test:
-        generators:
-            - name: fernapi/fern-pydantic-model
-              version: 1.4.4
-              config:
-                  package_name: methodwebassess
-              output:
-                  location: pypi
-                  package-name: methodwebassess
-                  token: ${TEST_PYPI_TOKEN}
-                  url: https://test.pypi.org/legacy/
-    pypi:
-        generators:
-            - name: fernapi/fern-pydantic-model
-              version: 1.4.4
-              config:
-                  package_name: methodwebassess
-              output:
-                  location: pypi
-                  package-name: methodwebassess
-                  token: ${PYPI_TOKEN}
+  local:
+    generators:
+      - name: fernapi/fern-go-sdk
+        version: 0.36.5
+        config:
+          importpath: github.com/Method-Security/webassess/generated/go
+        output:
+          location: local-file-system
+          path: ../generated/go
+  pypi-local:
+    generators:
+      - name: fernapi/fern-pydantic-model
+        version: 1.4.7
+        output:
+          location: local-file-system
+          path: ../generated/python
+  pypi-test:
+    generators:
+      - name: fernapi/fern-pydantic-model
+        version: 1.4.7
+        config:
+          package_name: methodwebassess
+        output:
+          location: pypi
+          package-name: methodwebassess
+          token: ${TEST_PYPI_TOKEN}
+          url: https://test.pypi.org/legacy/
+  pypi:
+    generators:
+      - name: fernapi/fern-pydantic-model
+        version: 1.4.7
+        config:
+          package_name: methodwebassess
+        output:
+          location: pypi
+          package-name: methodwebassess
+          token: ${PYPI_TOKEN}
